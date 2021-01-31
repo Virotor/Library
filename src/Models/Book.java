@@ -6,16 +6,26 @@ import java.util.Date;
 
 public class Book {
 
-    private String bookName;
-    private String[] bookAuthors;
+    private String bookName;        
+    private String bookAuthors;
     private int bookId;
     private String description;
 
     private BookStatus bookStatus;
 
-    private Date yearOfPub;
+    private int yearOfPub;
 
-    Book(String bookName, String[] bookAuthors, int bookId, String description, BookStatus bookStatus, Date yearOfPub){
+
+    public Book() {
+        this(null,null ,0 ,null ,BookStatus.New ,0 );
+    }
+
+    public Book(String bookName ,
+                String bookAuthors,
+                int bookId,
+                String description,
+                BookStatus bookStatus,
+                int yearOfPub){
         this.bookAuthors= bookAuthors;
         this.bookId = bookId;
         this.bookName = bookName;
@@ -28,7 +38,7 @@ public class Book {
         return bookName;
     }
 
-    public String[] getBookAuthors() {
+    public String getBookAuthors() {
         return bookAuthors;
     }
 
@@ -48,7 +58,7 @@ public class Book {
         this.description = description;
     }
 
-    public void setBookAuthors(String[] bookAuthors) {
+    public void setBookAuthors(String bookAuthors) {
         this.bookAuthors = bookAuthors;
     }
 
@@ -64,11 +74,11 @@ public class Book {
         this.bookStatus = bookStatus;
     }
 
-    public Date getYearOfPub() {
+    public int getYearOfPub() {
         return yearOfPub;
     }
 
-    public void setYearOfPub(Date yearOfPub) {
+    public void setYearOfPub(int yearOfPub) {
         this.yearOfPub = yearOfPub;
     }
 }

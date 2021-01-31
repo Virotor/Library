@@ -1,18 +1,29 @@
 package Controllers.Database;
 
-public class DatabaseServices  extends  DatabaseController{
+import Models.Service;
+
+import java.util.ArrayList;
+
+public class DatabaseServices  implements   DatabaseController<Service> {
+
+
     @Override
-    public void add() {
+    public ArrayList<Service> getElem() {
+        return null;
+    }
+
+    @Override
+    public void add(Service elem) {
 
     }
 
     @Override
-    public void update() {
+    public void update(Service elem) {
 
     }
 
     @Override
-    public void delete() {
+    public void delete(Service elem) {
 
     }
 }

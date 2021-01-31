@@ -1,6 +1,6 @@
 package Controllers.Manage;
 
-public class Librarian {
+public class LibrarianManager {
 
     private int librarianId;
 
