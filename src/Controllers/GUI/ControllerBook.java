@@ -15,8 +15,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
+import java.util.Currency;
 
 public class ControllerBook implements ISceneCreate {
     public Button showSearch;
@@ -44,11 +46,12 @@ public class ControllerBook implements ISceneCreate {
         loader.setLocation(getClass().getResource("/FXML/Book.fxml"));
         Parent content = loader.load();
         tab.setContent(content);
+        TextField but = (TextField) loader.getNamespace().get("yearOfPub");
+        but.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         tableBook = (TableView<Book>) loader.getNamespace().get("tableBook");
         progressBar = (ProgressIndicator) loader.getNamespace().get("progressBar");
         createTable();
         setBook(new Book());
-
     }
 
     private void createTable(){
@@ -64,7 +67,7 @@ public class ControllerBook implements ISceneCreate {
         nameColumn.setSortType(TableColumn.SortType.ASCENDING);
         tableBook.getColumns().add(nameColumn);
 
-        TableColumn<Book, Integer> year = new TableColumn<Book, Integer>("Автор");
+        TableColumn<Book, Integer> year = new TableColumn<Book, Integer>("Год издания");
 
         year.setCellValueFactory(new PropertyValueFactory<Book, Integer>("yearOfPub"));
         year.setSortType(TableColumn.SortType.ASCENDING);
@@ -86,11 +89,13 @@ public class ControllerBook implements ISceneCreate {
 
     private void editBook(Book book) throws IOException {
         ControllerEditBook controllerEditBook = new ControllerEditBook(parentStage,book);
+        controllerEditBook.controllerBook = this;
         controllerEditBook.createScene();
     }
 
 
-    private void setBook(Book book){
+
+    public void setBook(Book book){
 
         javafx.concurrent.Service<Void> service = new javafx.concurrent.Service<>() {
             @Override

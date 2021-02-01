@@ -75,6 +75,10 @@ public class MainController implements ISceneCreate {
         controllerUser.tab = (Tab) loader.getNamespace().get("userTab");
         controllerUser.createScene();
         controllerUser.parentStage = stage;
+        ControllerService controllerService = new ControllerService();
+        controllerService.tab = (Tab) loader.getNamespace().get("serviceTab");
+        controllerService.createScene();
+        controllerService.parentStage = stage;
         stage.show();
     }
 

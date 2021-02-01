@@ -5,15 +5,24 @@ public class Service {
     private int serviceId;
     private String serviceName;
     private int moneyBig;
-    private int moneyLittle;
 
 
-    public Service(String description, int serviceId, String serviceName, int moneyBig, int moneyLittle) {
+
+
+
+    public Service(){
+        description = null;
+        serviceId = 0;
+        serviceName =null;
+        moneyBig = 0;
+    }
+
+
+    public Service(String description, int serviceId, String serviceName, int moneyBig) {
         this.description = description;
         this.serviceId = serviceId;
         this.serviceName = serviceName;
         this.moneyBig = moneyBig;
-        this.moneyLittle = moneyLittle;
     }
 
     public String getDescription() {
@@ -48,7 +57,4 @@ public class Service {
         this.moneyBig = moneyBig;
     }
 
-    public int getMoneyLittle() {
-        return moneyLittle;
-    }
 }

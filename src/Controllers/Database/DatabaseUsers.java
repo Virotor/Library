@@ -60,16 +60,57 @@ public class DatabaseUsers implements DatabaseController<User> {
 
     @Override
     public void add(User elem) {
+        var connection = databaseConnector.connectToDatabase();
+        if(connection!=null){
+            String sql = "INSERT INTO  Users(userName, Address, PhoneNo) Values (?,?,?)";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, elem.getUserName());
+                preparedStatement.setString(2, elem.getAddress());
+                preparedStatement.setString(3, elem.getPhoneNo());
+                int res = preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
+        }
     }
 
     @Override
     public void update(User elem) {
+        var connection = databaseConnector.connectToDatabase();
+        if(connection!=null){
+            String sql = "UPDATE  Users set userName = ?, Address = ?, PhoneNo = ? where  UserId = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, elem.getUserName());
+                preparedStatement.setString(2, elem.getAddress());
+                preparedStatement.setString(3, elem.getPhoneNo());
+                preparedStatement.setInt(3, elem.getUserId());
+                int res = preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
+        }
     }
 
     @Override
     public void delete(User elem) {
+        var connection = databaseConnector.connectToDatabase();
+        if(connection!=null){
+            String sql = "DELETE  USers where UserId = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, elem.getUserId());
+                int res = preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
+        }
     }
 }

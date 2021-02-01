@@ -1,12 +1,20 @@
 package Enums;
 
 public enum BookStatus {
-    New,
-    Free,
-    Issuance,
-    GetBack;
+    New ("Новая"),
+    Free ("свободная"),
+    Issuance("Выдана"),
+    GetBack ("Возвращена");
 
+    String name;
 
+    BookStatus(String s) {
+        this.name = s;
+    }
+
+    public String getName(){
+        return  name;
+    }
     public static BookStatus fromInt(int x){
         switch (x){
             case 0:

@@ -87,11 +87,40 @@ public class DatabaseBooks implements DatabaseController<Book> {
 
     @Override
     public void update(Book elem) {
+        var connection = databaseConnector.connectToDatabase();
+        if(connection!=null){
+            String sql = "UPDATE Books set  BookName = ?, BookAuthors = ?, YearOfPub = ?, Description = ? where BookId = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, bookElem.getBookName());
+                preparedStatement.setString(2, bookElem.getBookAuthors());
+                //preparedStatement.setInt(3, bookElem.getBookStatus().ordinal());
+                preparedStatement.setInt(3, bookElem.getYearOfPub());
+                preparedStatement.setString(4, bookElem.getDescription());
+                preparedStatement.setInt(5,bookElem.getBookId());
+                int res = preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
 
+        }
     }
 
     @Override
     public void delete(Book elem) {
+        var connection = databaseConnector.connectToDatabase();
+        if(connection!=null){
+            String sql = "Delete  Books where BookId = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, elem.getBookId());
+                int res = preparedStatement.executeUpdate();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
 
+        }
     }
 }

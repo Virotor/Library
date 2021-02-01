@@ -19,7 +19,7 @@
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
               </TableView>
-         <ProgressIndicator fx:id="progressBar" prefHeight="413.0" prefWidth="555.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
+         <ProgressIndicator fx:id="progressBar" layoutX="239.0" layoutY="250.0" prefHeight="137.0" prefWidth="174.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="250.0" />
           </children>
       </AnchorPane>
     <AnchorPane fx:id="searchWindowBook" maxWidth="228.0" prefHeight="316.0" prefWidth="228.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

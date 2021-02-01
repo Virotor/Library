@@ -23,7 +23,7 @@ public class ControllerUser implements ISceneCreate{
     public ProgressIndicator progressBar;
     public AnchorPane searchWindowUser;
     public TextField nameUser;
-    public TableView tableBook;
+    public TableView tableUser;
 
     public Tab tab;
     public Stage parentStage;
@@ -41,23 +41,46 @@ public class ControllerUser implements ISceneCreate{
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
         nameColumn.setSortType(TableColumn.SortType.ASCENDING);
-        tableBook.getColumns().add(nameColumn);
+        tableUser.getColumns().add(nameColumn);
 
         nameColumn = new TableColumn<User, String>("Адрес");
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("address"));
         nameColumn.setSortType(TableColumn.SortType.ASCENDING);
-        tableBook.getColumns().add(nameColumn);
+        tableUser.getColumns().add(nameColumn);
 
         nameColumn = new TableColumn<User, String>("Номер телефона");
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("PhoneNo"));
         nameColumn.setSortType(TableColumn.SortType.ASCENDING);
-        tableBook.getColumns().add(nameColumn);
+        tableUser.getColumns().add(nameColumn);
+        tableUser.setRowFactory( tv -> {
+            TableRow<User> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    try {
+                        editUser(row.getItem());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return row ;
+        });
+
+
+    }
+
+    private void editUser(User user) throws IOException {
+        ControllerEditUser controllerEditUser = new ControllerEditUser();
+        controllerEditUser.controllerUser = this;
+        controllerEditUser.parentStage = parentStage;
+        controllerEditUser.user = user;
+        controllerEditUser.createScene();
     }
 
 
-    private void setUser(String userName){
+    public void setUser(String userName){
 
         javafx.concurrent.Service<Void> service = new javafx.concurrent.Service<>() {
             @Override
@@ -69,7 +92,7 @@ public class ControllerUser implements ISceneCreate{
                         progressBar.setVisible(true);
                         DatabaseUsers databaseBooks = new DatabaseUsers(userName);
                         users = FXCollections.observableArrayList(databaseBooks.getElem());
-                        tableBook.setItems(users);
+                        tableUser.setItems(users);
                         progressBar.setVisible(false);
                         return null;
                     }
@@ -83,10 +106,10 @@ public class ControllerUser implements ISceneCreate{
     @Override
     public void createScene() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/FXML/Book.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/User.fxml"));
         Parent content = loader.load();
         tab.setContent(content);
-        tableBook = (TableView<Book>) loader.getNamespace().get("tableBook");
+        tableUser = (TableView<User>) loader.getNamespace().get("tableUser");
         progressBar = (ProgressIndicator) loader.getNamespace().get("progressBar");
         createTable();
         setUser(null);

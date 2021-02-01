@@ -13,6 +13,7 @@ public class Book {
 
     private BookStatus bookStatus;
 
+
     private int yearOfPub;
 
 
@@ -81,4 +82,6 @@ public class Book {
     public void setYearOfPub(int yearOfPub) {
         this.yearOfPub = yearOfPub;
     }
+
+
 }
