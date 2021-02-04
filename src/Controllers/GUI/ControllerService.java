@@ -2,6 +2,7 @@ package Controllers.GUI;
 
 import Controllers.Database.DatabaseBooks;
 import Controllers.Database.DatabaseServices;
+import Controllers.Manage.AccoutingSingleton;
 import Models.Book;
 import Models.Service;
 import javafx.collections.FXCollections;
@@ -62,6 +63,7 @@ public class ControllerService implements ISceneCreate {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     try {
+                        if(AccoutingSingleton.isIsAcc())
                         editService(row.getItem());
                     } catch (IOException e) {
                         e.printStackTrace();

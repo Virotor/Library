@@ -1,7 +1,11 @@
 package Enums;
 
+import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
+
 public enum BookStatus {
-    New ("Новая"),
+    New ("Все"),
     Free ("свободная"),
     Issuance("Выдана"),
     GetBack ("Возвращена");
@@ -27,5 +31,24 @@ public enum BookStatus {
                 return  GetBack;
         }
         return null;
+    }
+
+
+    public static String[] getNames(){
+        return new String[] {"Выдана","Возвращена"};
+    }
+
+    public static BookStatus fromString(String value){
+        switch (value){
+            case "Все":
+                return New;
+            case "Свободна":
+                return Free;
+            case "Выдана":
+                return  Issuance;
+            case "Возвращена":
+                return  GetBack;
+        }
+        return  null;
     }
 }

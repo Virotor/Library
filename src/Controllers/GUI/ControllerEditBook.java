@@ -2,23 +2,22 @@ package Controllers.GUI;
 
 import Controllers.Database.DatabaseBooks;
 import Models.Book;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Models.IssuanceBook;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.converter.IntegerStringConverter;
 
-import javax.xml.transform.Source;
 import java.io.IOException;
+import java.sql.Date;
 
 public class ControllerEditBook implements ISceneCreate {
 
@@ -29,6 +28,7 @@ public class ControllerEditBook implements ISceneCreate {
     public TextArea description;
     public Button apply;
     public Button cancel;
+    public TableView issuanceBook;
     private  Stage parentStage;
     private    Book book;
     public ControllerBook controllerBook;
@@ -57,6 +57,7 @@ public class ControllerEditBook implements ISceneCreate {
         yearOfPub = (TextField) namespace.get("yearOfPub");
         authors = (TextField) namespace.get("authors");
         description = (TextArea) namespace.get("description");
+        issuanceBook = (TableView<IssuanceBook>) namespace.get("issuanceBook");
         yearOfPub.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         bookName.setText(book.getBookName());
         yearOfPub.setText(String.valueOf(book.getYearOfPub()));
@@ -67,6 +68,8 @@ public class ControllerEditBook implements ISceneCreate {
         apply = (Button) namespace.get("apply");
         apply.setOnAction(actionEvent -> apply());
         ownedStage.setResizable(false);
+        createTable();
+        this.setIssuanceBook();
         ownedStage.showAndWait();
     }
 
@@ -90,6 +93,50 @@ public class ControllerEditBook implements ISceneCreate {
         }
     }
 
+    private void createTable(){
+        TableColumn<IssuanceBook, String> nameUser = new TableColumn<>("ФИО");
+        nameUser.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        nameUser.setSortType(TableColumn.SortType.ASCENDING);
+        issuanceBook.getColumns().add(nameUser);
+
+        TableColumn<IssuanceBook, Date> dateTake = new TableColumn<>("Дата выдачи");
+        dateTake.setCellValueFactory(new PropertyValueFactory<>("dateTake"));
+        dateTake.setSortType(TableColumn.SortType.ASCENDING);
+        issuanceBook.getColumns().add(dateTake);
+
+        TableColumn<IssuanceBook, Date> dateReturn = new TableColumn<>("Дата возврата");
+        dateReturn.setCellValueFactory(new PropertyValueFactory<>("dateReturn"));
+        dateReturn.setSortType(TableColumn.SortType.ASCENDING);
+        issuanceBook.getColumns().add(dateReturn);
+
+        TableColumn<IssuanceBook, String> statusBook = new TableColumn<>("Статус книги");
+        statusBook.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBookStatus().getName()));
+        statusBook.setSortType(TableColumn.SortType.ASCENDING);
+        issuanceBook.getColumns().add(statusBook);
+
+    }
+
+
+
+    public void setIssuanceBook(){
+        javafx.concurrent.Service<Void> service = new javafx.concurrent.Service<>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Void call() {
+                        ObservableList<IssuanceBook> issuanceBooks;
+                        DatabaseBooks databaseBooks = new DatabaseBooks(book);
+                        issuanceBooks = FXCollections.observableArrayList(databaseBooks.getBookUsers());
+                        issuanceBook.setItems(issuanceBooks);
+                        return null;
+                    }
+                };
+            }
+        };
+        service.start();
+    }
+
     private boolean isChanged(){
         if(book.getBookId()==0)
             return  true;
@@ -107,11 +154,6 @@ public class ControllerEditBook implements ISceneCreate {
     }
 
     private void delete(){
-        if(book.getBookId()!=0){
-            DatabaseBooks databaseBooks = new DatabaseBooks(new Book());
-            databaseBooks.delete(book);
-            controllerBook.setBook(new Book());
-        }
         ownedStage.close();
     }
 }

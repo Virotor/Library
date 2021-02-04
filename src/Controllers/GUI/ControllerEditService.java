@@ -1,8 +1,6 @@
 package Controllers.GUI;
 
-import Controllers.Database.DatabaseBooks;
 import Controllers.Database.DatabaseServices;
-import Models.Book;
 import Models.Service;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -94,11 +92,6 @@ public class ControllerEditService implements  ISceneCreate{
     }
 
     private void delete(){
-        if(service.getServiceId()!=0){
-            DatabaseServices databaseServices = new DatabaseServices();
-            databaseServices.delete(service);
-            controllerService.setService(null);
-        }
         ownedStage.close();
     }
 }

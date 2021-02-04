@@ -2,7 +2,10 @@ package Controllers.GUI;
 
 import Controllers.Database.DatabaseBooks;
 import Controllers.Manage.AccoutingSingleton;
+import Enums.BookStatus;
 import Models.Book;
+import com.sun.javafx.collections.ImmutableObservableList;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -50,6 +53,9 @@ public class ControllerBook implements ISceneCreate {
         but.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         tableBook = (TableView<Book>) loader.getNamespace().get("tableBook");
         progressBar = (ProgressIndicator) loader.getNamespace().get("progressBar");
+        statusBook = (ChoiceBox) loader.getNamespace().get("statusBook");
+        statusBook.setItems(FXCollections.observableArrayList("Все", "Свободна", "Выдана"));
+        statusBook.setValue("Все");
         createTable();
         setBook(new Book());
     }
@@ -71,11 +77,16 @@ public class ControllerBook implements ISceneCreate {
 
         year.setCellValueFactory(new PropertyValueFactory<Book, Integer>("yearOfPub"));
         year.setSortType(TableColumn.SortType.ASCENDING);
+
+        TableColumn<Book, String> statusBook = new TableColumn<>("Статус книги");
+        statusBook.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBookStatus().getName()));
+        tableBook.getColumns().add(statusBook);
         tableBook.setRowFactory( tv -> {
             TableRow<Book> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     try {
+                        if(AccoutingSingleton.isIsAcc())
                         editBook(row.getItem());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -128,6 +139,7 @@ public class ControllerBook implements ISceneCreate {
         if(!yearOfPub.getText().trim().equalsIgnoreCase("")){
             bookSearch.setYearOfPub(Integer.parseInt(yearOfPub.getText()));
         }
+        bookSearch.setBookStatus(BookStatus.fromString((String) statusBook.getValue()));
             setBook(bookSearch);
     }
 

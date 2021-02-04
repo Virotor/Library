@@ -1,8 +1,6 @@
 package Controllers.GUI;
 
 import Controllers.Manage.AccoutingSingleton;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +34,7 @@ public class MainController implements ISceneCreate {
     public MainController(Stage stage) {
         this.stage = stage;
     }
-    public MainController(){};
+    public MainController(){}
 
 
 
@@ -46,10 +44,13 @@ public class MainController implements ISceneCreate {
         if(!AccoutingSingleton.isIsAcc()){
             ControllerLogIn controllerLogIn = new ControllerLogIn(stage);
             controllerLogIn.createScene();
-            logIn.setText("Выход");
-            userName.setText(AccoutingSingleton.getLibrarianManager().librarianName);
+            if(AccoutingSingleton.isIsAcc()){
+                logIn.setText("Выход");
+                userName.setText(AccoutingSingleton.getLibrarianManager().librarianName);
+            }
         }
         else{
+            AccoutingSingleton.logOn();
             logIn.setText("Вход");
             userName.setText("Аноним");
         }
@@ -67,6 +68,7 @@ public class MainController implements ISceneCreate {
         Parent content = loader.load();
         Scene scene = new Scene(content);
         stage.setScene(scene);
+
         ControllerBook controllerBook = new ControllerBook();
         controllerBook.tab = (Tab) loader.getNamespace().get("bookTab");
         controllerBook.createScene();
@@ -74,6 +76,7 @@ public class MainController implements ISceneCreate {
         ControllerUser controllerUser = new ControllerUser();
         controllerUser.tab = (Tab) loader.getNamespace().get("userTab");
         controllerUser.createScene();
+        AccoutingSingleton.setTab(controllerUser.tab);
         controllerUser.parentStage = stage;
         ControllerService controllerService = new ControllerService();
         controllerService.tab = (Tab) loader.getNamespace().get("serviceTab");

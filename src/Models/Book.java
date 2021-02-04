@@ -1,6 +1,8 @@
 package Models;
 
 import Enums.BookStatus;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 
 import java.util.Date;
 
@@ -13,6 +15,8 @@ public class Book {
 
     private BookStatus bookStatus;
 
+
+    private ComboBox<String> comboBox;
 
     private int yearOfPub;
 
@@ -33,6 +37,7 @@ public class Book {
         this.bookStatus = bookStatus;
         this.description = description;
         this.yearOfPub = yearOfPub;
+        comboBox = new ComboBox<>(FXCollections.observableArrayList(BookStatus.getNames()));
     }
 
     public String getBookName() {
@@ -84,4 +89,12 @@ public class Book {
     }
 
 
+    public ComboBox<String> getComboBox() {
+        comboBox.setValue(bookStatus.getName());
+        return comboBox;
+    }
+
+    public void setComboBox(ComboBox<String> comboBox) {
+        this.comboBox = comboBox;
+    }
 }

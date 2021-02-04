@@ -23,6 +23,16 @@ public enum PaymentType {
         return null;
     }
 
+    public static PaymentType fromString(String str){
+        switch (str){
+            case "Кредитная карта":
+                return  CreditCard;
+            case "Наличные":
+                return  Nall;
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

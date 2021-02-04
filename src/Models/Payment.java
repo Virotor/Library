@@ -21,6 +21,8 @@ public class Payment {
         this.paymentType = paymentType;
     }
 
+
+
     public int getUserId() {
         return userId;
     }
